@@ -1,0 +1,112 @@
+CREATE TABLE Trainees (
+ Trainee_id INTEGER PRIMARY KEY,
+ Trainee_name VARCHAR(100) NOT NULL,
+ City VARCHAR(50) NOT NULL,
+ Join_date DATE NOT NULL
+);
+CREATE TABLE Trainers (
+ Trainer_id INTEGER PRIMARY KEY,
+ Trainer_name VARCHAR(100) NOT NULL,
+ Specialization VARCHAR(100) NOT NULL
+);
+CREATE TABLE Courses (
+ Course_id INTEGER PRIMARY KEY,
+ Course_name VARCHAR(100) NOT NULL,
+ Category VARCHAR(50) NOT NULL,
+ Fee DECIMAL(10,2) NOT NULL,
+ Trainer_id INTEGER NOT NULL,
+ FOREIGN KEY (Trainer_id) REFERENCES Trainers(Trainer_id)
+);
+CREATE TABLE Batches (
+ Batch_id INTEGER PRIMARY KEY,
+ Course_id INTEGER NOT NULL,
+ Batch_name VARCHAR(50) NOT NULL,
+ Start_date DATE NOT NULL,
+ End_date DATE NOT NULL,
+ Capacity INTEGER NOT NULL,
+ FOREIGN KEY (Course_id) REFERENCES Courses(Course_id)
+);
+CREATE TABLE Enrollments (
+ Enrollment_id INTEGER PRIMARY KEY,
+ Trainee_id INTEGER NOT NULL,
+ Batch_id INTEGER NOT NULL,
+ Enrollment_date DATE NOT NULL,
+ Status VARCHAR(20) NOT NULL,
+ FOREIGN KEY (Trainee_id) REFERENCES Trainees(Trainee_id),
+ FOREIGN KEY (Batch_id) REFERENCES Batches(Batch_id)
+);
+CREATE TABLE Assessments (
+ Assessment_id INTEGER PRIMARY KEY,
+ Enrollment_id INTEGER NOT NULL,
+ Assessment_date DATE NOT NULL,
+ Score INTEGER,
+ Result_status VARCHAR(20) NOT NULL,
+ FOREIGN KEY (Enrollment_id) REFERENCES Enrollments(Enrollment_id)
+);
+
+
+-- B. Insert Trainees, Trainers, Courses, and Batches
+INSERT INTO Trainees (Trainee_id, Trainee_name, City, Join_date) VALUES
+(1, 'Aanya Shah', 'Pune', '2026-01-05'),
+(2, 'Ravi Menon', 'Mumbai', '2026-01-06'),
+(3, 'Meera Iyer', 'Bengaluru', '2026-01-07'),
+(4, 'Imran Khan', 'Hyderabad', '2026-02-15'),
+(5, 'Kavya Nair', 'Chennai', '2026-02-16'),
+(6, 'Daniel Joseph', 'Kochi', '2026-02-20'),
+(7, 'Nisha Verma', 'Delhi', '2026-02-22'),
+(8, 'Arjun Rao', 'Jaipur', '2026-03-01');
+INSERT INTO Trainers (Trainer_id, Trainer_name, Specialization) VALUES
+(101, 'Neha Kapoor', 'SQL and Databases'),
+(102, 'Vikram Sethi', 'Python Programming'),
+(103, 'Lata Desai', 'Data Visualization'),
+(104, 'Sameer Kulkarni', 'Data Warehousing');
+INSERT INTO Courses (Course_id, Course_name, Category, Fee, Trainer_id) VALUES
+(201, 'SQL Analytics', 'Analytics', 12000.00, 101),
+(202, 'Advanced SQL', 'Analytics', 18000.00, 101),
+(203, 'Python for Data', 'Programming', 15000.00, 102),
+(204, 'Data Visualization', 'Visualization', 10000.00, 103),
+(205, 'Data Warehousing', 'Engineering', 20000.00, 104);
+INSERT INTO Batches (Batch_id, Course_id, Batch_name, Start_date, End_date, Capacity) VALUES
+(301, 201, 'SQL-A', '2026-01-15', '2026-02-28', 4),
+(302, 201, 'SQL-B', '2026-03-10', '2026-04-25', 4),
+(303, 202, 'ADVSQL-A', '2026-02-10', '2026-04-10', 4),
+(304, 203, 'PY-A', '2026-01-20', '2026-03-20', 4),
+(305, 204, 'VIZ-A', '2026-02-15', '2026-03-31', 4),
+(306, 205, 'DWH-A', '2026-04-15', '2026-06-15', 4);
+
+-- C. Insert Enrollments and Assessments
+INSERT INTO Enrollments (Enrollment_id, Trainee_id, Batch_id, Enrollment_date, Status) VALUES
+(401, 1, 301, '2026-01-06', 'Completed'),
+(402, 2, 301, '2026-01-07', 'Completed'),
+(403, 3, 301, '2026-01-08', 'Dropped'),
+(404, 4, 302, '2026-03-01', 'Active'),
+(405, 5, 302, '2026-03-02', 'Active'),
+(406, 1, 303, '2026-02-01', 'Completed'),
+(407, 3, 303, '2026-02-02', 'Completed'),
+(408, 6, 303, '2026-02-03', 'Active'),
+(409, 2, 304, '2026-01-10', 'Completed'),
+(410, 5, 304, '2026-01-11', 'Dropped'),
+(411, 7, 305, '2026-02-05', 'Completed'),
+(412, 1, 305, '2026-02-06', 'Completed'),
+(413, 4, 305, '2026-02-07', 'Active'),
+(414, 6, 306, '2026-04-02', 'Active');
+INSERT INTO Assessments (Assessment_id, Enrollment_id, Assessment_date, Score, Result_status) VALUES
+(501, 401, '2026-02-01', 82, 'Evaluated'),
+(502, 401, '2026-02-15', 88, 'Evaluated'),
+(503, 402, '2026-02-01', 76, 'Evaluated'),
+(504, 402, '2026-02-15', 76, 'Evaluated'),
+(505, 403, '2026-02-01', 65, 'Evaluated'),
+(506, 404, '2026-03-20', 91, 'Evaluated'),
+(507, 405, '2026-03-20', 91, 'Evaluated'),
+(508, 406, '2026-03-01', 85, 'Evaluated'),
+(509, 406, '2026-04-01', 93, 'Evaluated'),
+(510, 407, '2026-03-01', 89, 'Evaluated'),
+(511, 407, '2026-04-01', 90, 'Pending'),
+(512, 408, '2026-03-01', 78, 'Evaluated'),
+(513, 409, '2026-02-10', 74, 'Evaluated'),
+(514, 409, '2026-03-10', 81, 'Evaluated'),
+(515, 410, '2026-02-10', 69, 'Pending'),
+(516, 411, '2026-03-01', 88, 'Evaluated'),
+(517, 412, '2026-03-01', 92, 'Evaluated'),
+(518, 413, '2026-03-01', 88, 'Evaluated'),
+(519, 414, '2026-05-01', 80, 'Pending');
